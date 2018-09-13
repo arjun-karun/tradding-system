@@ -1,15 +1,26 @@
 import React, { Component } from "react";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
+import BetContract from "./contracts/Bet.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
-import { Grid, Row, Col, PageHeader } from 'react-bootstrap';
+import { Grid, Row, Col, PageHeader,FormGroup, FormControl, ControlLabel, HelpBlock, Button} from 'react-bootstrap';
 
 import "./App.css";
 import Header from "./common/Header";
 import Bet from "./bet/Bet";
 
 class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      matches: [],
+      web3: null,
+      accounts: null,
+      contract: null
+    }
+
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  }
 
   componentDidMount = async () => {
     try {
@@ -20,7 +31,7 @@ class App extends Component {
       const accounts = await web3.eth.getAccounts();
 
       // Get the contract instance.
-      const Contract = truffleContract(SimpleStorageContract);
+      const Contract = truffleContract(BetContract);
       Contract.setProvider(web3.currentProvider);
       const instance = await Contract.deployed();
 
@@ -36,23 +47,40 @@ class App extends Component {
     }
   };
 
-  runExample = async () => {
+  runExample() {
     const { accounts, contract } = this.state;
 
     // Stores a given value, 5 by default.
-    await contract.set(9, { from: accounts[0] });
+    // await contract.set(9, { from: accounts[0] });
 
     // Get the value from the contract to prove it worked.
-    const response = await contract.get();
+    contract.matches(1).then((data) => {
+      console.log(data);
+      // Update state with the result.
+      this.setState({ matches: data});
+    });
+  }
 
-    // Update state with the result.
-    this.setState({ storageValue: response.toNumber() });
-  };
+
+  handleFormSubmit(event) {
+    event.preventDefault();
+
+    alert("form handle receivied");
+
+    let team1 = event.target.team1.value;
+    let team2 = event.target.team2.value;
+    let matchname = event.target.matchname.value;
+
+    const { accounts, contract } = this.state;
+    contract.addMatch(matchname,team1,team2,{ from: accounts[0] }).then(() => {
+          alert("Match added successfully");
+    });
+  }
 
   render() {
-    if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
-    }
+    // if (!this.state.web3) {
+    //   return <div>Loading Web3, accounts, and contract...</div>;
+    // }
     return (
       <div>
           <Header/>
@@ -65,6 +93,59 @@ class App extends Component {
                 </Col>
               </Row>
               <Bet/>
+
+              <Row>
+              <br/>
+              <br/>
+              <Col xs={12} md={12}>
+               <hr/>
+              </Col>
+
+                <Col xs={6} md={6}>
+                <form onSubmit={this.handleFormSubmit}>
+                    <FormGroup
+                      controlId="formBasicText"
+                      validationState=""
+                    >
+                      <ControlLabel>Match Name</ControlLabel>
+                      <FormControl
+                        type="text"
+                        placeholder="Enter text"
+                        name="matchname"
+                      />
+                    </FormGroup>
+
+
+                    <FormGroup
+                      controlId="formBasicText"
+                      validationState=""
+                    >
+                      <ControlLabel>Team 1</ControlLabel>
+                      <FormControl
+                        type="text"
+                        value={this.state.value}
+                        placeholder="Enter text"
+                        onChange={this.handleChange}
+                        name="team1"
+                      />
+                    </FormGroup>
+
+                    <FormGroup
+                      controlId="formBasicText"
+                      validationState=""
+                    >
+                      <ControlLabel>Team 2</ControlLabel>
+                      <FormControl
+                        type="text"
+                        placeholder="Enter text"
+                        name="team2"
+                      />
+                    </FormGroup>
+                      <input type="submit" value="Add match" />
+                </form>
+                </Col>
+              </Row>
+
           </Grid>
     </div>
     );
