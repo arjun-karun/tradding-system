@@ -1,13 +1,24 @@
 import React, { Component } from "react";
-import { Row, Col, PageHeader, ProgressBar } from 'react-bootstrap';
+import { Row, Col, PageHeader, ProgressBar, Button } from 'react-bootstrap';
 
 class Bet extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  handleBetClick(event){
+
+    alert(event.currentTarget.innerText);
+    
+  }
+
   render() {
     return (
       <Row>
       <Col xs={12} md={12}>
-        <span>PAKISTAN</span>
-        <span className="pull-right">INDIA</span>
+        <Button bsStyle="link" onClick={this.handleBetClick}>PAK</Button>
+        <Button bsStyle="link" className="pull-right" onClick={this.handleBetClick}>IND</Button>
       </Col>
       <Col xs={12} md={12}>
         <ProgressBar>

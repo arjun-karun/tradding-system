@@ -54,7 +54,7 @@ class App extends Component {
     // await contract.set(9, { from: accounts[0] });
 
     // Get the value from the contract to prove it worked.
-    contract.matches(1).then((data) => {
+    contract.getMatch(0).then((data) => {
       console.log(data);
       // Update state with the result.
       this.setState({ matches: data});
@@ -67,13 +67,22 @@ class App extends Component {
 
     alert("form handle receivied");
 
+    const { accounts, contract } = this.state;
+    
+    contract.placeBet(0, 'IND', { from: accounts[0] }).then(() => {
+      alert("bet place success!!!!");
+    });
+    return;
+    
     let team1 = event.target.team1.value;
     let team2 = event.target.team2.value;
     let matchname = event.target.matchname.value;
 
-    const { accounts, contract } = this.state;
-    contract.addMatch(matchname,team1,team2,{ from: accounts[0] }).then(() => {
+    // const { accounts, contract } = this.state;
+    contract.addMatch(matchname,team1,team2, { from: accounts[0] }).then(() => {
           alert("Match added successfully");
+    }).catch((error)=>{
+      alert("error");
     });
   }
 
