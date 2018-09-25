@@ -4211,13 +4211,13 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {
-    "5777": {
+    "3": {
       "events": {},
       "links": {},
-      "address": "0x916ba082e9dcb5e08c58264e28a9f880c7d9b40a",
-      "transactionHash": "0x1d59e5a817dd79e5c1cfe22b9242084bf59b9b7014074ec7828e0f8a910efbc7"
+      "address": "0xfdba82f4e581393d8b94810e4a5b1d54dcc37a44",
+      "transactionHash": "0xa4c30d099e1700c54e857ad2ce86baea1be3e7f2cb583bc1696134b7d4dca50f"
     }
   },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-09-19T17:24:04.302Z"
+  "updatedAt": "2018-09-25T20:09:57.098Z"
 }

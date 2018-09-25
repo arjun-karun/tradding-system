@@ -69,10 +69,10 @@ class App extends Component {
 
     const { accounts, contract } = this.state;
     
-    contract.placeBet(0, 'IND', { from: accounts[0] }).then(() => {
-      alert("bet place success!!!!");
-    });
-    return;
+    // contract.placeBet(0, 'IND', { from: accounts[0] }).then(() => {
+    //   alert("bet place success!!!!");
+    // });
+    // return;
     
     let team1 = event.target.team1.value;
     let team2 = event.target.team2.value;
