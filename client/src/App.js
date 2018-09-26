@@ -12,11 +12,13 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       matches: [],
       web3: null,
       accounts: null,
-      contract: null
+      contract: null,
+      isLoading: false
     }
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -35,9 +37,8 @@ class App extends Component {
       Contract.setProvider(web3.currentProvider);
       const instance = await Contract.deployed();
 
-      // Set web3, accounts, and contract to the state, and then proceed with an
-      // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.runExample);
+      this.setState({ web3, accounts, contract: instance });
+
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -47,49 +48,32 @@ class App extends Component {
     }
   };
 
-  runExample() {
-    const { accounts, contract } = this.state;
-
-    // Stores a given value, 5 by default.
-    // await contract.set(9, { from: accounts[0] });
-
-    // Get the value from the contract to prove it worked.
-    contract.getMatch(0).then((data) => {
-      console.log(data);
-      // Update state with the result.
-      this.setState({ matches: data});
-    });
-  }
-
-
   handleFormSubmit(event) {
-    event.preventDefault();
 
-    alert("form handle receivied");
+    event.preventDefault();
+    this.setState({ isLoading: true });
 
     const { accounts, contract } = this.state;
-    
-    // contract.placeBet(0, 'IND', { from: accounts[0] }).then(() => {
-    //   alert("bet place success!!!!");
-    // });
-    // return;
     
     let team1 = event.target.team1.value;
     let team2 = event.target.team2.value;
     let matchname = event.target.matchname.value;
 
     // const { accounts, contract } = this.state;
-    contract.addMatch(matchname,team1,team2, { from: accounts[0] }).then(() => {
-          alert("Match added successfully");
+    contract.addMatch(matchname,team1,team2, { from: accounts[0] }).then((response) => {
+        alert("Match added successfully");
+        console.log(response);
+        this.setState({ isLoading: false });
     }).catch((error)=>{
-      alert("error");
+      alert("Something went wrong. Please try later!");
+      console.log(error);
+      this.setState({ isLoading: false });
     });
   }
 
   render() {
-    // if (!this.state.web3) {
-    //   return <div>Loading Web3, accounts, and contract...</div>;
-    // }
+    const { isLoading } = this.state;
+
     return (
       <div>
           <Header/>
@@ -150,7 +134,15 @@ class App extends Component {
                         name="team2"
                       />
                     </FormGroup>
-                      <input type="submit" value="Add match" />
+                  
+                     <Button
+                          type="submit"
+                          bsStyle="primary"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? 'Loading...' : 'Add match'}
+                      </Button>
+
                 </form>
                 </Col>
               </Row>
