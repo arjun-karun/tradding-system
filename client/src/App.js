@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import BetContract from "./contracts/Bet.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
-import { Grid, Row, Col, PageHeader,FormGroup, FormControl, ControlLabel, HelpBlock, Button} from 'react-bootstrap';
+import { Grid, Row, Col, PageHeader,FormGroup, FormControl, ControlLabel, HelpBlock, Button, Alert} from 'react-bootstrap';
 
 import "./App.css";
 import Header from "./common/Header";
@@ -18,7 +18,8 @@ class App extends Component {
       web3: null,
       accounts: null,
       contract: null,
-      isLoading: false
+      isLoading: false,
+      showAlert: false,
     }
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -63,7 +64,7 @@ class App extends Component {
     contract.addMatch(matchname,team1,team2, { from: accounts[0] }).then((response) => {
         alert("Match added successfully");
         console.log(response);
-        this.setState({ isLoading: false });
+        this.setState({ isLoading: false, showAlert: true });
     }).catch((error)=>{
       alert("Something went wrong. Please try later!");
       console.log(error);
@@ -72,7 +73,7 @@ class App extends Component {
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, showAlert } = this.state;
 
     return (
       <div>
@@ -144,6 +145,15 @@ class App extends Component {
                       </Button>
 
                 </form>
+                </Col>
+              </Row>
+
+              <br/>
+              <Row bsClass={showAlert? 'show':'hidden'}>
+                <Col xs={12} md={12}>
+                    <Alert bsStyle="success">
+                        <strong>Match </strong> added successfully!!
+                     </Alert>
                 </Col>
               </Row>
 
