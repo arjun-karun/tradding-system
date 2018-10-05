@@ -7,6 +7,7 @@ import { Grid, Row, Col, PageHeader,FormGroup, FormControl, ControlLabel, HelpBl
 import "./App.css";
 import Header from "./common/Header";
 import Bet from "./bet/Bet";
+import AddMatch from "./bet/AddMatch";
 
 class App extends Component {
 
@@ -17,15 +18,14 @@ class App extends Component {
       matches: [],
       web3: null,
       accounts: null,
-      contract: null,
-      isLoading: false,
-      showAlert: false,
+      contract: null
     }
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.load();
   }
 
-  componentDidMount = async () => {
+  load = async () => {
     try {
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
@@ -73,7 +73,6 @@ class App extends Component {
   }
 
   render() {
-    const { isLoading, showAlert } = this.state;
 
     return (
       <div>
@@ -86,76 +85,8 @@ class App extends Component {
                   </PageHeader>
                 </Col>
               </Row>
-              <Bet/>
 
-              <Row>
-              <br/>
-              <br/>
-              <Col xs={12} md={12}>
-               <hr/>
-              </Col>
-
-                <Col xs={6} md={6}>
-                <form onSubmit={this.handleFormSubmit}>
-                    <FormGroup
-                      controlId="formBasicText"
-                      validationState=""
-                    >
-                      <ControlLabel>Match Name</ControlLabel>
-                      <FormControl
-                        type="text"
-                        placeholder="Enter text"
-                        name="matchname"
-                      />
-                    </FormGroup>
-
-
-                    <FormGroup
-                      controlId="formBasicText"
-                      validationState=""
-                    >
-                      <ControlLabel>Team 1</ControlLabel>
-                      <FormControl
-                        type="text"
-                        value={this.state.value}
-                        placeholder="Enter text"
-                        onChange={this.handleChange}
-                        name="team1"
-                      />
-                    </FormGroup>
-
-                    <FormGroup
-                      controlId="formBasicText"
-                      validationState=""
-                    >
-                      <ControlLabel>Team 2</ControlLabel>
-                      <FormControl
-                        type="text"
-                        placeholder="Enter text"
-                        name="team2"
-                      />
-                    </FormGroup>
-                  
-                     <Button
-                          type="submit"
-                          bsStyle="primary"
-                          disabled={isLoading}
-                        >
-                          {isLoading ? 'Loading...' : 'Add match'}
-                      </Button>
-
-                </form>
-                </Col>
-              </Row>
-
-              <br/>
-              <Row bsClass={showAlert? 'show':'hidden'}>
-                <Col xs={12} md={12}>
-                    <Alert bsStyle="success">
-                        <strong>Match </strong> added successfully!!
-                     </Alert>
-                </Col>
-              </Row>
+              <Bet contractInstance={this.state.contract}/>
 
           </Grid>
     </div>
