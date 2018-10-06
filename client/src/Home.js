@@ -7,7 +7,6 @@ class Home extends Component {
 
   constructor(props){
     super(props);
-    this.state ={ contract:[]};
   }
 
   render() {
@@ -20,7 +19,7 @@ class Home extends Component {
                   </PageHeader>
                 </Col>
               </Row>
-              // <Bet contractInstance={this.state.contract}/>
+              <Bet contractInstance={this.props.main.contract}/>
           </Grid>
     )
   }

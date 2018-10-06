@@ -11,10 +11,11 @@ class Bet extends Component {
     this.state = {
       matches: []
     };
+    this.loadMatches();
   }
 
-  componentWillReceiveProps(newProps) {
-    const contract = newProps.contractInstance;
+  loadMatches() {
+    const contract = this.props.contractInstance;
     contract.getMatchCount().then( totalMatches => {
       totalMatches = Number(totalMatches);
       let matches = []; 
