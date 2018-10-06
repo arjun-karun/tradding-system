@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Grid, Row, Col, PageHeader,FormGroup, FormControl, ControlLabel, HelpBlock, Button, Alert} from 'react-bootstrap';
 import Header from "../common/Header";
 
-class AddMatch extends Component {
+class CreateSale extends Component {
 
   constructor(props) {
     super(props);
@@ -15,24 +15,24 @@ class AddMatch extends Component {
   }
 
     handleFormSubmit(event) {
+      
+      event.preventDefault();
+      this.setState({ isLoading: true });
+      
+      let energytype = event.target.energytype.value;
+      let units = event.target.units.value;
+      let location = event.target.location.value;
 
-    event.preventDefault();
-    this.setState({ isLoading: true });
-    
-    let team1 = event.target.team1.value;
-    let team2 = event.target.team2.value;
-    let matchname = event.target.matchname.value;
-
-    const { accounts, contract } = this.props.main;
-    contract.addMatch(matchname,team1,team2, { from: accounts[0] }).then((response) => {
-        alert("Match added successfully");
-        console.log(response);
-        this.setState({ isLoading: false, showAlert: true });
-    }).catch((error)=>{
-      alert("Something went wrong. Please try later!");
-      console.log(error);
-      this.setState({ isLoading: false });
-    });
+      const { accounts, contract } = this.props.main;
+      contract.createSale(energytype, units, location,'', { from: accounts[0] }).then((response) => {
+          alert("Sale added successfully");
+          console.log(response);
+          this.setState({ isLoading: false, showAlert: true });
+      }).catch((error)=>{
+        alert("Something went wrong. Please try later!");
+        console.log(error);
+        this.setState({ isLoading: false });
+      });
   }
 
   render() {
@@ -44,7 +44,7 @@ class AddMatch extends Component {
               <Row>
                 <Col xs={12} md={12}>
                   <PageHeader>
-                      Add New Match
+                      Sell your power
                   </PageHeader>
                 </Col>
               </Row>
@@ -59,11 +59,11 @@ class AddMatch extends Component {
                 controlId="formBasicText"
                 validationState=""
               >
-                <ControlLabel>Match Name</ControlLabel>
+                <ControlLabel>Energy type</ControlLabel>
                 <FormControl
                   type="text"
                   placeholder="Enter text"
-                  name="matchname"
+                  name="energytype"
                 />
               </FormGroup>
 
@@ -72,13 +72,13 @@ class AddMatch extends Component {
                 controlId="formBasicText"
                 validationState=""
               >
-                <ControlLabel>Team 1</ControlLabel>
+                <ControlLabel>Units</ControlLabel>
                 <FormControl
-                  type="text"
+                  type="number"
                   value={this.state.value}
                   placeholder="Enter text"
                   onChange={this.handleChange}
-                  name="team1"
+                  name="units"
                 />
               </FormGroup>
 
@@ -86,11 +86,11 @@ class AddMatch extends Component {
                 controlId="formBasicText"
                 validationState=""
               >
-                <ControlLabel>Team 2</ControlLabel>
+                <ControlLabel>Location</ControlLabel>
                 <FormControl
                   type="text"
                   placeholder="Enter text"
-                  name="team2"
+                  name="location"
                 />
               </FormGroup>
             
@@ -110,7 +110,7 @@ class AddMatch extends Component {
         <Row bsClass={showAlert? 'show':'hidden'}>
           <Col xs={12} md={12}>
               <Alert bsStyle="success">
-                  <strong>Match </strong> added successfully!!
+                  <strong>Sale </strong> added successfully!!
                </Alert>
           </Col>
       </Row>
@@ -121,4 +121,4 @@ class AddMatch extends Component {
   }
 }
 
-export default AddMatch;
+export default CreateSale;

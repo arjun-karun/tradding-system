@@ -9,15 +9,15 @@ class Header extends Component {
         <Navbar.Header>
         <Navbar.Brand className="test">
               <LinkContainer to="/">
-                  <a href="#brand">Bet your game</a>
+                  <a href="#brand">ElectroEth</a>
               </LinkContainer>
         </Navbar.Brand>
         <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
             <Nav>
-                <LinkContainer to="/addmatch">
-                   <NavItem>Add New Match</NavItem>
+                <LinkContainer to="/createsale">
+                   <NavItem>Sell Your Power</NavItem>
                  </LinkContainer>
             </Nav>
         </Navbar.Collapse>

@@ -1,5 +1,5 @@
-var Bet = artifacts.require("./Bet.sol");
+var SellFactory = artifacts.require("./SellFactory.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Bet);
+  deployer.deploy(SellFactory);
 };

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, PageHeader, ProgressBar, Button, Grid } from 'react-bootstrap';
 import truffleContract from "truffle-contract";
-import Bet from "./bet/Bet";
+import Sales from "./components/Sales";
 
 class Home extends Component {
 
@@ -15,11 +15,11 @@ class Home extends Component {
               <Row>
                 <Col xs={12} md={12}>
                   <PageHeader>
-                      Bet DAPP
+                      Dashboard
                   </PageHeader>
                 </Col>
               </Row>
-              <Bet contractInstance={this.props.main.contract}/>
+              <Sales contractInstance={this.props.main.contract}/>
           </Grid>
     )
   }

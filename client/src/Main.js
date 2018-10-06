@@ -2,8 +2,8 @@ import {Component} from "react";
 import React from "react";
 import { Switch, Route } from 'react-router-dom';
 import Home from './Home';
-import AddMatch from './bet/AddMatch';
-import BetContract from "./contracts/Bet.json";
+import CreateSale from './components/CreateSale';
+import SellFactory from "./contracts/SellFactory.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
 
@@ -28,7 +28,7 @@ class Main extends Component {
           const accounts = await web3.eth.getAccounts();
 
           // Get the contract instance.
-          const Contract = truffleContract(BetContract);
+          const Contract = truffleContract(SellFactory);
           Contract.setProvider(web3.currentProvider);
           const instance = await Contract.deployed();
 
@@ -56,7 +56,7 @@ class Main extends Component {
             <main>
                 <Switch>
                     <Route exact path='/' render={(props) => <Home {...props} main={this.state} />} />
-                    <Route path='/addmatch' component={AddMatch}/>
+                    <Route path='/createsale' render={(props) => <CreateSale {...props} main={this.state} />}/>
                 </Switch>
             </main>
         )
