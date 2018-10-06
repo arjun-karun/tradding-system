@@ -31,6 +31,13 @@ contract BidderAccount is BidderFactory, ERC20_Token {
     }
 
     /**
+     * Returns the amount which _spender is still allowed to withdraw from _owner
+     */
+    function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
+        return userToCoin[_owner];    
+    }
+
+    /**
      * Returns the total amount of tokens
      * @return total amount
      */
