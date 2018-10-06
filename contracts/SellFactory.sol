@@ -20,6 +20,7 @@ contract SellFactory is ERC20_Token {
   mapping (address => uint) public ownerToUnits;
   mapping (address => uint) ownerSaleCount;
   mapping (address => mapping (address => uint256)) public biddingApproval;
+  mapping (uint => mapping (address => uint256)) public bidding;
 
 
   function createSale(string _saleType, uint _units, string _location, string _expectedTime) public {
@@ -82,7 +83,7 @@ contract SellFactory is ERC20_Token {
      * Returns the amount which _spender is still allowed to withdraw from _owner
      */
     function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
-        return ownerToUnits[_owner];    
+        return biddingApproval[_owner][_spender];    
     }
 
     /**
@@ -94,7 +95,7 @@ contract SellFactory is ERC20_Token {
      returns (bool success) {                        
         ownerToUnits[msg.sender].sub(_value);                      // Subtract from the sender
         ownerToUnits[_to].add(_value);                             // Add the same to the recipient
-        Transfer(msg.sender, _to, _value);                   // Notify anyone listening that this transfer took place
+        emit Transfer(msg.sender, _to, _value);                   // Notify anyone listening that this transfer took place
         return true;
     }
 
@@ -105,8 +106,8 @@ contract SellFactory is ERC20_Token {
      * @return {return}    Return true if the action succeeded
      */
     function approve(address _spender, uint256 _value) public returns (bool success) {
-        allowance[msg.sender][_spender] = _value;
-        Approval(msg.sender, _spender, _value);
+        biddingApproval[msg.sender][_spender] = _value;
+        emit Approval(msg.sender, _spender, _value);
         return true;
     }  
 
@@ -119,11 +120,11 @@ contract SellFactory is ERC20_Token {
      */
     function transferFrom(address _from, address _to, uint256 _value) public No0x (_to) ValidBalance(_from, _to, _value)
     returns (bool success) {
-        if (_value > allowance[_from][msg.sender]) revert();     // Check allowance
-        balances[_from] -= _value;                               // Subtract from the sender
-        balances[_to] += _value;                                 // Add the same to the recipient
-        allowance[_from][msg.sender] -= _value;
-        Transfer(_from, _to, _value);
+        if (biddingApproval[_from][msg.sender] > 0) revert();     // Check allowance
+        ownerToUnits[msg.sender].sub(_value);                          // Subtract from the sender
+        ownerToUnits[_to].add(_value);                                 // Add the same to the recipient
+        biddingApproval[_from][msg.sender] = 0;
+        emit Transfer(_from, _to, _value);
         return true;
     }
 }

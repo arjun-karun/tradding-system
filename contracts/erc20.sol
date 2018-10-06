@@ -1,3 +1,4 @@
+pragma solidity ^0.4.24;
 /**
  * See https://github.com/ethereum/EIPs/issues/200
  */
@@ -25,23 +26,4 @@ contract ERC20_Token {
     
     // Returns the amount which _spender is still allowed to withdraw from _owner
     function allowance(address _owner, address _spender) public constant returns (uint256 remaining);
-}
-
-contract ERC20_Details {
-    string tokenName;
-    string tokenSymbol;
-    uint8 tokenDecimals;
-
-    function name() public view returns (string _name);
-    function symbol() public view returns (string _symbol);
-    function decimals() public view returns (uint8 _decimals);
-
-    function ERC20_Details(string _name, string _symbol, uint8 _decimals) public {
-        require (keccak256(_name) != keccak256(''));
-        require (keccak256(_symbol) != keccak256(''));
-
-        tokenName = _name;
-        tokenSymbol = _symbol;
-        tokenDecimals = _decimals;
-    }
 }
