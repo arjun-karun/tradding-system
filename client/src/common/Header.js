@@ -9,7 +9,7 @@ class Header extends Component {
         <Navbar.Header>
         <Navbar.Brand className="test">
               <LinkContainer to="/">
-                  <a href="#brand">ElectroEth</a>
+                  <a href="#brand">PowerTrade</a>
               </LinkContainer>
         </Navbar.Brand>
         <Navbar.Toggle />

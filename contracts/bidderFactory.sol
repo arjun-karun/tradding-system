@@ -50,7 +50,7 @@ contract BidderFactory is Ownable {
         userToCoin[msg.sender] = userToCoin[msg.sender] + _coinCount;
     }
 
-    function getBidById(uint _indexId) external view returns(uint, address, uint)
+    function getBidById(uint _indexId) external view returns(uint coins, address bidder, uint time)
     {
         return (bids[_indexId].amount, 
           bids[_indexId].bidder, 

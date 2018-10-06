@@ -98,7 +98,7 @@ class CreateSale extends Component {
                     bsStyle="primary"
                     disabled={isLoading}
                   >
-                    {isLoading ? 'Loading...' : 'Add match'}
+                    {isLoading ? 'Loading...' : 'Create Sale'}
                 </Button>
 
           </form>
