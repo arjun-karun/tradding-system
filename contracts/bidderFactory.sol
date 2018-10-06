@@ -10,7 +10,7 @@ contract BidderFactory is Ownable {
     using SafeMath for uint256;  
 
     mapping (uint => uint) saleToBidCount;
-    mapping (address => uint) userToCoin;
+    mapping (address => uint) public userToCoin;
 
     uint powerCoinFee = 0.00001 ether;
 
@@ -22,6 +22,10 @@ contract BidderFactory is Ownable {
         bool exists;
     }
     Bid[] public bids;
+
+    function getMyCoin() external view returns(uint) {
+       return userToCoin[msg.sender]; 
+    }
 
     function setPowerCoinFee(uint _fee) public {
         powerCoinFee = _fee;
@@ -35,7 +39,7 @@ contract BidderFactory is Ownable {
         }
     }
 
-    function placeBid (uint _saleId, uint _amount) external  {
+    function placeBid (uint _saleId, uint _amount) public {
         bids.push(Bid(_amount, _saleId, msg.sender, uint(now), true));
         saleToBidCount[_saleId]++;
         userToCoin[msg.sender] = userToCoin[msg.sender] - _amount;

@@ -54,17 +54,16 @@ class CreateSale extends Component {
         </Col>
           <Col xs={6} md={6}>
           <form onSubmit={this.handleFormSubmit}>
-              <FormGroup
-                controlId="formBasicText"
-                validationState=""
-              >
-                <ControlLabel>Energy type</ControlLabel>
-                <FormControl
-                  type="text"
-                  placeholder="Enter text"
-                  name="energytype"
-                />
-              </FormGroup>
+
+               <FormGroup controlId="formControlsSelect">
+                  <ControlLabel>Energy typ</ControlLabel>
+                  <FormControl componentClass="select" placeholder="select" name="energytype">
+                    <option value="">select</option>
+                    <option value="solar">Solar</option>
+                    <option value="wind">Wind</option>
+                    <option value="tide">Tide</option>
+                  </FormControl>
+                </FormGroup>
 
 
               <FormGroup
