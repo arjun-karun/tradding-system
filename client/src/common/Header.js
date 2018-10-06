@@ -20,6 +20,11 @@ class Header extends Component {
                    <NavItem>Sell Your Power</NavItem>
                  </LinkContainer>
             </Nav>
+             <Nav pullRight>
+                <LinkContainer to="/myprofile">
+                   <NavItem>My Profile</NavItem>
+                 </LinkContainer>
+            </Nav>
         </Navbar.Collapse>
       </Navbar>
     );

@@ -1,3 +1,15 @@
 .navbar-brand {
     color: #00d8ff;
 }
+
+.top-buffer {
+	margin-top:20px;
+}
+
+.badge-success {
+	background-color: green;
+}
+
+.badge-warning {
+	background-color: #eea236;
+}

@@ -3,9 +3,12 @@ import React from "react";
 import { Switch, Route } from 'react-router-dom';
 import Home from './Home';
 import CreateSale from './components/CreateSale';
+import MyProfile from './components/MyProfile';
+
 import SellFactory from "./contracts/SellFactory.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
+
 
 class Main extends Component {
 
@@ -57,6 +60,7 @@ class Main extends Component {
                 <Switch>
                     <Route exact path='/' render={(props) => <Home {...props} main={this.state} />} />
                     <Route path='/createsale' render={(props) => <CreateSale {...props} main={this.state} />}/>
+                    <Route path='/myprofile' render={(props) => <MyProfile {...props} main={this.state} />}/>
                 </Switch>
             </main>
         )
