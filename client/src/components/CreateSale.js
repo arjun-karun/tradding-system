@@ -25,7 +25,6 @@ class CreateSale extends Component {
 
       const { accounts, contract } = this.props.main;
       contract.createSale(energytype, units, location,'', { from: accounts[0] }).then((response) => {
-          alert("Sale added successfully");
           console.log(response);
           this.setState({ isLoading: false, showAlert: true });
       }).catch((error)=>{

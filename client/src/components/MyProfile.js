@@ -17,9 +17,10 @@ class MyProfile extends Component {
     let mySales =[];
     contract.getSalesByOwner(accounts[0]).then(salesIdList => {
        salesIdList.map(saleId => {
+          saleId = Number(saleId);
           contract.getSale(saleId).then(sales => {
             mySales.push(sales);
-            this.setState({sales});
+            this.setState({sales:mySales});
           });
        });  
     });
@@ -27,7 +28,15 @@ class MyProfile extends Component {
 
 
   render() {
-    let salesLength = this.state.sales.length;
+    let sales = this.state.sales;
+    if(sales.length <= 0 ) {
+      return (
+          <div>
+           Loading....
+           </div>
+        )
+    }
+
     return (
            <Grid>
               <Row>
@@ -35,7 +44,6 @@ class MyProfile extends Component {
                   <PageHeader>
                       My Profile <small>Power Coins <Badge bsClass="badge badge-warning">42</Badge></small> <small>Units <Badge bsClass="badge badge-success">234</Badge></small>                  
                   </PageHeader>
-                  <p>{salesLength}</p>
                 </Col>
               </Row>
 
@@ -57,31 +65,15 @@ class MyProfile extends Component {
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
+                            <th>Type</th>
+                            <th>Units</th>
+                            <th>Location</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td colSpan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
+                          {sales.map((sale,key) => <tr><td>{key+1}</td><td>{sale.saleType}</td><td>{Number(sale.units)}</td><td>{sale.location}</td></tr>)}
                         </tbody>
-                      </Table>;
+                      </Table>
                   </p>
                 </Col>
               </Row>

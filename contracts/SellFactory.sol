@@ -26,8 +26,8 @@ contract SellFactory is ERC20_Token {
   function createSale(string _saleType, uint _units, string _location, string _expectedTime) public {
     uint saleId = sales.push(Sale(_saleType, _units,  _location, _expectedTime)) - 1;
     saleToOwner[saleId] = msg.sender;
-    ownerSaleCount[msg.sender].add(1);
-    ownerToUnits[msg.sender].add(_units);
+    ownerSaleCount[msg.sender]++;
+    ownerToUnits[msg.sender] = ownerToUnits[msg.sender] + _units;
   }
 
   function getSalesCount() public constant returns(uint) {
@@ -40,6 +40,19 @@ contract SellFactory is ERC20_Token {
       sales[_indexId].location, 
       sales[_indexId].expetedDeliveryDate);
   }
+
+  function getSalesByOwner(address _owner) external view returns(uint[]) {
+        uint[] memory result = new uint[](ownerSaleCount[_owner]);
+        uint counter = 0;
+        for (uint i = 0; i < sales.length; i++) {
+          if (saleToOwner[i] == _owner) {
+            result[counter] = i;
+            counter++;
+          }
+        }
+        return result;
+    }
+  
     /**
      * Prevent an account from behing 0x0
      * @param addr Address to check
