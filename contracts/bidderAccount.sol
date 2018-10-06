@@ -3,6 +3,7 @@ pragma solidity ^0.4.24;
 
 import "./erc20.sol";
 import "./safemath.sol";
+import "./bidderFactory.sol";
 
 contract BidderAccount is BidderFactory, ERC20_Token {
 	using SafeMath for uint256;  
@@ -45,13 +46,16 @@ contract BidderAccount is BidderFactory, ERC20_Token {
     function balanceOf(address addr) public constant returns(uint256 balance) {
         return userToCoin[addr];
     }
-    
-    /**
-     * Returns the amount which _spender is still allowed to withdraw from _owner
-     */
-    function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
-        return biddingApproval[_owner][_spender];    
+
+    function approveTransaction (address _to, uint _bidId) external No0x(_to) returns(bool res) {
+    	require(bids[_bidId].exists, "Bid is not exists");
+    	
+    	userToCoin[_to].add(bids[_bidId].amount);     
+        _revertBidToOthers(_to, bids[_bidId].saleId);                             
+        emit Transfer(msg.sender, _to, bids[_bidId].amount);                   // Notify anyone listening that this transfer took place
+        return true;
     }
+    
 
     /**
      * Send coins
@@ -59,9 +63,9 @@ contract BidderAccount is BidderFactory, ERC20_Token {
      * @param _value     Amount of tokens to send 
      */
      function transfer(address _to, uint256 _value) public No0x(_to) ValidBalance(msg.sender, _to, _value) 
-     returns (bool success) {                        
+     returns (bool success) {      
         userToCoin[msg.sender].sub(_value);                      // Subtract from the sender
-        userToCoin[_to].add(_value);                             // Add the same to the recipient
+        userToCoin[_to].add(_value);                                  
         emit Transfer(msg.sender, _to, _value);                   // Notify anyone listening that this transfer took place
         return true;
     }
@@ -73,7 +77,6 @@ contract BidderAccount is BidderFactory, ERC20_Token {
      * @return {return}    Return true if the action succeeded
      */
     function approve(address _spender, uint256 _value) public returns (bool success) {
-        biddingApproval[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
         return true;
     }  
@@ -87,10 +90,8 @@ contract BidderAccount is BidderFactory, ERC20_Token {
      */
     function transferFrom(address _from, address _to, uint256 _value) public No0x (_to) ValidBalance(_from, _to, _value)
     returns (bool success) {
-        if (biddingApproval[_from][msg.sender] > 0) revert();     // Check allowance
-        ownerToUnits[msg.sender].sub(_value);                          // Subtract from the sender
-        ownerToUnits[_to].add(_value);                                 // Add the same to the recipient
-        biddingApproval[_from][msg.sender] = 0;
+        userToCoin[msg.sender].sub(_value);                          // Subtract from the sender
+        userToCoin[_to].add(_value);                                 // Add the same to the recipient
         emit Transfer(_from, _to, _value);
         return true;
     }

@@ -17,7 +17,8 @@ contract BidderFactory {
         uint amount;
         uint saleId;
         address bidder;
-        uint timestamp; 
+        uint timestamp;
+        bool exists;
     }
     Bid[] public bids;
 
@@ -25,7 +26,7 @@ contract BidderFactory {
         powerCoinFee = _fee;
     }
 
-    function _approveBid (address _owner, uint _saleId ) internal view  {
+    function _revertBidToOthers (address _owner, uint _saleId ) internal view  {
         for (uint i = 0; i < bids.length; i++) {
           if (bids[i].saleId == _saleId && bids[i].bidder != _owner) {
                 userToCoin[msg.sender].add(bids[i].amount);
@@ -34,7 +35,7 @@ contract BidderFactory {
     }
 
     function placeBid (uint _saleId, uint _amount) external  {
-        bids.push(Bid(_amount, _saleId, msg.sender, uint(now)));
+        bids.push(Bid(_amount, _saleId, msg.sender, uint(now), true));
         saleToBidCount[_saleId].add(1);
         userToCoin[msg.sender].sub(_amount);
     }
