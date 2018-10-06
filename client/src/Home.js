@@ -19,7 +19,7 @@ class Home extends Component {
                   </PageHeader>
                 </Col>
               </Row>
-              <Sales contractInstance={this.props.main.contract}/>
+              <Sales main={this.props.main}/>
           </Grid>
     )
   }

@@ -4,6 +4,7 @@ import {
   Grid, Table, Form, FormGroup,FormControl, ControlLabel } from 'react-bootstrap';
 import getWeb3 from "../utils/getWeb3";
 import truffleContract from "truffle-contract";
+import BidderAccount from "../contracts/BidderAccount.json";
 
 class Sales extends Component {
 
@@ -17,7 +18,7 @@ class Sales extends Component {
   }
 
   componentDidMount() {
-    const contract = this.props.contractInstance;
+    const {web3, accounts, contract} = this.props.main;
     contract.getSalesCount().then( salesCount => {
       salesCount = Number(salesCount);
       let sales = []; 
@@ -28,11 +29,21 @@ class Sales extends Component {
           });
       }
     });
+
   }
 
-
-  handleFormSubmit() {
-
+  handleFormSubmit(event) {
+    event.preventDefault();
+    let bidValue = event.target.bid.value;
+    const {web3, accounts, contract} = this.props.main;
+    const Contract = truffleContract(BidderAccount);
+    Contract.setProvider(web3.currentProvider);
+    Contract.deployed().then(instance => {
+      instance.placeBid(0, bidValue, {from: accounts[0]}).then(test => {
+          console.log(test);
+          alert("Bid placed successfully");
+      });
+    });
   }
 
   render() {
@@ -65,11 +76,11 @@ class Sales extends Component {
                         <td>{Number(sale.units)}</td>
                         <td>{sale.location}</td>
                         <td>
-                          <Form inline>
+                          <Form inline onSubmit={this.handleFormSubmit}>
                               <FormGroup controlId="formInlineName">
-                                <FormControl type="text" placeholder="coins" />
+                                <FormControl type="text" name="bid" placeholder="coins" />
                               </FormGroup>{' '}
-                              <Button type="submit" bsStyle="danger">Bid</Button>
+                              <Button type="submit" bsStyle="danger" keyid={key}>Bid</Button>
                             </Form>
                         </td>
                       </tr>

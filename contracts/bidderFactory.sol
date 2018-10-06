@@ -37,8 +37,8 @@ contract BidderFactory is Ownable {
 
     function placeBid (uint _saleId, uint _amount) external  {
         bids.push(Bid(_amount, _saleId, msg.sender, uint(now), true));
-        saleToBidCount[_saleId].add(1);
-        userToCoin[msg.sender].sub(_amount);
+        saleToBidCount[_saleId]++;
+        userToCoin[msg.sender] = userToCoin[msg.sender] - _amount;
     }
 
     function withdraw() external onlyOwner {
