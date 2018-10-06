@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, PageHeader, ProgressBar, Button } from 'react-bootstrap';
+import { Row, Col, PageHeader, ProgressBar, Button, Grid } from 'react-bootstrap';
 import getWeb3 from "../utils/getWeb3";
 import truffleContract from "truffle-contract";
 
@@ -10,10 +10,9 @@ class Sales extends Component {
     this.state = {
       sales: []
     };
-    this.loadSales();
   }
 
-  loadSales() {
+  componentDidMount() {
     const contract = this.props.contractInstance;
     contract.getSalesCount().then( salesCount => {
       salesCount = Number(salesCount);
@@ -27,33 +26,14 @@ class Sales extends Component {
     });
   }
 
-  handleBetClick(event){
-    alert(event.currentTarget.innerText);
-  }
-
-  
-    renderSales() {
-
-     let sales = [];
-      for(let sale of this.state.sales) {
-
-        sales.push(
-            <Row>
-            <Col xs={12} md={12}>
-              <p>{sale.saleType}</p>
-            </Col>
-            </Row>
-          )
-      }
-
-      return sales;  
-  }
-
   render() {
     return (
-      this.renderSales() 
+      <Grid>
+        {this.state.sales.map(sale => <Row><Col xs={12} md={12}><p>{sale.saleType}</p></Col></Row>)}
+      </Grid>
     )
   }
+
 }
 
 export default Sales;
