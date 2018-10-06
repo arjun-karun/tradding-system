@@ -10,27 +10,29 @@ class AddMatch extends Component {
       isLoading: false,
       showAlert: false
     }
+
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
     handleFormSubmit(event) {
 
-    // event.preventDefault();
-    // this.setState({ isLoading: true });
+    event.preventDefault();
+    this.setState({ isLoading: true });
     
-    // let team1 = event.target.team1.value;
-    // let team2 = event.target.team2.value;
-    // let matchname = event.target.matchname.value;
+    let team1 = event.target.team1.value;
+    let team2 = event.target.team2.value;
+    let matchname = event.target.matchname.value;
 
-    // // const { accounts, contract } = this.state;
-    // contract.addMatch(matchname,team1,team2, { from: accounts[0] }).then((response) => {
-    //     alert("Match added successfully");
-    //     console.log(response);
-    //     this.setState({ isLoading: false, showAlert: true });
-    // }).catch((error)=>{
-    //   alert("Something went wrong. Please try later!");
-    //   console.log(error);
-    //   this.setState({ isLoading: false });
-    // });
+    const { accounts, contract } = this.props.main;
+    contract.addMatch(matchname,team1,team2, { from: accounts[0] }).then((response) => {
+        alert("Match added successfully");
+        console.log(response);
+        this.setState({ isLoading: false, showAlert: true });
+    }).catch((error)=>{
+      alert("Something went wrong. Please try later!");
+      console.log(error);
+      this.setState({ isLoading: false });
+    });
   }
 
   render() {
