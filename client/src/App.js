@@ -6,8 +6,7 @@ import { Grid, Row, Col, PageHeader,FormGroup, FormControl, ControlLabel, HelpBl
 
 import "./App.css";
 import Header from "./common/Header";
-import Bet from "./bet/Bet";
-import AddMatch from "./bet/AddMatch";
+import Main from './Main'
 
 class App extends Component {
 
@@ -21,7 +20,7 @@ class App extends Component {
       contract: null
     }
 
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    // this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.load();
   }
 
@@ -49,47 +48,13 @@ class App extends Component {
     }
   };
 
-  handleFormSubmit(event) {
-
-    event.preventDefault();
-    this.setState({ isLoading: true });
-
-    const { accounts, contract } = this.state;
-    
-    let team1 = event.target.team1.value;
-    let team2 = event.target.team2.value;
-    let matchname = event.target.matchname.value;
-
-    // const { accounts, contract } = this.state;
-    contract.addMatch(matchname,team1,team2, { from: accounts[0] }).then((response) => {
-        alert("Match added successfully");
-        console.log(response);
-        this.setState({ isLoading: false, showAlert: true });
-    }).catch((error)=>{
-      alert("Something went wrong. Please try later!");
-      console.log(error);
-      this.setState({ isLoading: false });
-    });
-  }
-
   render() {
 
     return (
       <div>
           <Header/>
-          <Grid>
-              <Row>
-                <Col xs={12} md={12}>
-                  <PageHeader>
-                      Bet DAPP
-                  </PageHeader>
-                </Col>
-              </Row>
-
-              <Bet contractInstance={this.state.contract}/>
-
-          </Grid>
-    </div>
+          <Main/>
+      </div>
     );
   }
 }

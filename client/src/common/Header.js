@@ -8,16 +8,16 @@ class Header extends Component {
       <Navbar inverse collapseOnSelect staticTop>
         <Navbar.Header>
         <Navbar.Brand className="test">
-            <LinkContainer to="/">
-                 <p>Betty Dapp</p>
-             </LinkContainer>
+              <LinkContainer to="/">
+                  <a href="#brand">Bet your game</a>
+              </LinkContainer>
         </Navbar.Brand>
         <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
             <Nav>
                 <LinkContainer to="/addmatch">
-                 <NavItem>Add New Match</NavItem>
+                   <NavItem>Add New Match</NavItem>
                  </LinkContainer>
             </Nav>
         </Navbar.Collapse>
