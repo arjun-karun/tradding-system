@@ -44,7 +44,7 @@ class Sales extends Component {
           </div>
         )
     }
-    
+
     return (
       <Grid>
           <Row>

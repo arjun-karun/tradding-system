@@ -3,8 +3,9 @@ pragma solidity ^0.4.24;
 
 import "./erc20.sol";
 import "./safemath.sol";
+import "./ownable.sol";
 
-contract BidderFactory {
+contract BidderFactory is Ownable {
 
     using SafeMath for uint256;  
 
@@ -40,9 +41,13 @@ contract BidderFactory {
         userToCoin[msg.sender].sub(_amount);
     }
 
+    function withdraw() external onlyOwner {
+        owner.transfer(this.balance);
+    }
+
     function buyCoin(uint _coinCount) external payable {
-        require(msg.value == _coinCount.mul(powerCoinFee));
-        userToCoin[msg.sender].add(_coinCount);
+        require(msg.value == _coinCount * powerCoinFee);
+        userToCoin[msg.sender] = userToCoin[msg.sender] + _coinCount;
     }
 
     function getBidById(uint _indexId) external view returns(uint, address, uint)
