@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Row, Col, PageHeader, ProgressBar, Button, Grid } from 'react-bootstrap';
+import { 
+  Row, Col, PageHeader, ProgressBar, Button, 
+  Grid, Table, Form, FormGroup,FormControl, ControlLabel } from 'react-bootstrap';
 import getWeb3 from "../utils/getWeb3";
 import truffleContract from "truffle-contract";
 
@@ -10,6 +12,8 @@ class Sales extends Component {
     this.state = {
       sales: []
     };
+
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -26,10 +30,54 @@ class Sales extends Component {
     });
   }
 
+
+  handleFormSubmit() {
+
+  }
+
   render() {
+
+    if (this.state.sales.length <= 0) {
+      return (
+          <div>
+            Loading....
+          </div>
+        )
+    }
+    
     return (
       <Grid>
-        {this.state.sales.map(sale => <Row><Col xs={12} md={12}><p>{sale.saleType}</p></Col></Row>)}
+          <Row>
+          <Col sm={12} md={12}>
+              <Table responsive>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Energy Type</th>
+                      <th>Units</th>
+                      <th>Location</th>
+                      <th>Buy</th>
+                    </tr>
+                    {this.state.sales.map((sale, key) => 
+                      <tr>
+                        <td>{key + 1}</td>
+                        <td>{sale.saleType}</td>
+                        <td>{Number(sale.units)}</td>
+                        <td>{sale.location}</td>
+                        <td>
+                          <Form inline>
+                              <FormGroup controlId="formInlineName">
+                                <FormControl type="text" placeholder="coins" />
+                              </FormGroup>{' '}
+                              <Button type="submit" bsStyle="danger">Bid</Button>
+                            </Form>
+                        </td>
+                      </tr>
+                      )}
+                  </thead>
+              </Table>
+          </Col>
+          </Row>
       </Grid>
     )
   }

@@ -13,3 +13,10 @@
 .badge-warning {
 	background-color: #eea236;
 }
+
+.sale-card {
+	border: 1px solid grey;
+	padding: 10px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
