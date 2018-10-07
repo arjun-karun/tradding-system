@@ -22,7 +22,7 @@ class Header extends Component {
             </Nav>
             <Nav>
                 <LinkContainer to="/createsale">
-                   <NavItem>Sell Your Power</NavItem>
+                   <NavItem>Create a sale</NavItem>
                  </LinkContainer>
             </Nav>
             <Nav pullRight>

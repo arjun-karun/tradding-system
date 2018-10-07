@@ -81,7 +81,7 @@ class Sales extends Component {
                         <td>
                           <Form inline onSubmit={this.handleFormSubmit}>
                               <FormGroup controlId="formInlineName">
-                                <FormControl type="text" name={"bid_" + key} placeholder="coins" />
+                                <FormControl type="number" name={"bid_" + key} placeholder="coins" />
                               </FormGroup>{' '}
                               <Button type="submit" bsStyle="danger">Bid</Button>
                             </Form>

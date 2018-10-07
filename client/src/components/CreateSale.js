@@ -43,7 +43,7 @@ class CreateSale extends Component {
               <Row>
                 <Col xs={12} md={12}>
                   <PageHeader>
-                      Sell your power
+                      Create a sale
                   </PageHeader>
                 </Col>
               </Row>
