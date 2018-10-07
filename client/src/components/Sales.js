@@ -34,12 +34,15 @@ class Sales extends Component {
 
   handleFormSubmit(event) {
     event.preventDefault();
-    let bidValue = event.target.bid.value;
+    let inputElement = event.target.querySelector('input');
+    let name = inputElement.name;
+    let bidValue = event.target[name]["value"];
+    let saleId = name.split("_")[1];
     const {web3, accounts, contract} = this.props.main;
     const Contract = truffleContract(BidderAccount);
     Contract.setProvider(web3.currentProvider);
     Contract.deployed().then(instance => {
-      instance.placeBid(0, bidValue, {from: accounts[0]}).then(test => {
+      instance.placeBid(saleId, Number(bidValue), {from: accounts[0]}).then(test => {
           console.log(test);
           alert("Bid placed successfully");
       });
@@ -78,9 +81,9 @@ class Sales extends Component {
                         <td>
                           <Form inline onSubmit={this.handleFormSubmit}>
                               <FormGroup controlId="formInlineName">
-                                <FormControl type="text" name="bid" placeholder="coins" />
+                                <FormControl type="text" name={"bid_" + key} placeholder="coins" />
                               </FormGroup>{' '}
-                              <Button type="submit" bsStyle="danger" keyid={key}>Bid</Button>
+                              <Button type="submit" bsStyle="danger">Bid</Button>
                             </Form>
                         </td>
                       </tr>

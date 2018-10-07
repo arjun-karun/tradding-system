@@ -17,8 +17,11 @@ const getWeb3 = () =>
       } else {
         // Fallback to localhost if no web3 injection. We've configured this to
         // use the development console's port by default.
-        const provider = new Web3.providers.HttpProvider(
-          "https://rinkeby.infura.io:443"
+        // const provider = new Web3.providers.HttpProvider(
+        //   "https://rinkeby.infura.io:443"
+        // );
+         const provider = new Web3.providers.HttpProvider(
+          "http://localhost:7545"
         );
         web3 = new Web3(provider);
         console.log("No web3 instance injected, using Local web3.");
